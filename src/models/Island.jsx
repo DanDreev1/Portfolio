@@ -6,119 +6,151 @@ Source: https://sketchfab.com/3d-models/foxs-islands-163b68e09fcc47618450150be77
 Title: Fox's islands
 */
 
-import React, { useRef, useEffect } from 'react'
-import { useGLTF } from '@react-three/drei'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useRef, useEffect } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import islandScene from '../assets/3d/island.glb'
 import { a } from '@react-spring/three'
 
-import islandScene from '../assets/3d/island.glb'
-
-const Island = ({ isRotating, setisRotating, setCurentStage, ...props}) => {
+const Island = ({ isRotating, setisRotating, setCurentStage, ...props }) => {
   const islandRef = useRef();
-
-  const { gl, viewport } = useThree()
-  const { nodes, materials } = useGLTF(islandScene)
-
+  const { gl, viewport } = useThree();
+  const { nodes, materials } = useGLTF(islandScene);
   const lastX = useRef(0);
-  const rotatingSpeed = useRef(0);
-  const dumpingFactor = 0.95;
+  const rotationSpeed = useRef(0);
+  const dampingFactor = 0.95;
+  const rotationSensitivity = 0.005;
 
   const handlePointerDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setisRotating(true);
-
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-
-    lastX.current = clientX
+    startRotation(e.clientX);
   }
-  const handlePointerUp = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setisRotating(false);
-  }
+
   const handlePointerMove = (e) => {
     e.stopPropagation();
     e.preventDefault();
-
-    if(isRotating) {
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-
-        const delta = (clientX - lastX.current) / viewport.width;
-
-        islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-        lastX.current = clientX;
-        rotatingSpeed.current = delta * 0.01 * Math.PI;
-    };
+    moveRotation(e.clientX);
   }
-  
+
+  const handlePointerUp = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    endRotation();
+  }
+
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    startRotation(e.touches[0].clientX);
+  }
+
+  const handleTouchMove = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    moveRotation(e.touches[0].clientX);
+  }
+
+  const handleTouchEnd = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    endRotation();
+  }
+
   const handleKeyDown = (e) => {
-    if(e.key === 'ArrowLeft') {
-        if(isRotating) setisRotating(true);
-        islandRef.current.rotation.y += 0.01 * Math.PI;
-        rotatingSpeed.current = 0.0125;
-    } else if(e.key === 'ArrowRight') {
-        if(isRotating) setisRotating(true);
-        islandRef.current.rotation.y -= 0.01 * Math.PI;
-        rotatingSpeed.current = -0.0125;
+    if (e.key === 'ArrowLeft') {
+      if (!isRotating) setisRotating(true);
+      islandRef.current.rotation.y += rotationSensitivity * Math.PI;
+      rotationSpeed.current = 0.0125;
+    } else if (e.key === 'ArrowRight') {
+      if (!isRotating) setisRotating(true);
+      islandRef.current.rotation.y -= rotationSensitivity * Math.PI;
+      rotationSpeed.current = -0.0125;
     }
   }
+
   const handleKeyUp = (e) => {
-    if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         setisRotating(false);
     }
   }
 
-  useFrame (() => {
-    if(!isRotating) {
-        rotatingSpeed.current *= dumpingFactor;
-        
-        if(Math.abs(rotatingSpeed.current) < 0.001) {
-            rotatingSpeed.current = 0
-        }
+  const startRotation = (clientX) => {
+    setisRotating(true);
+    lastX.current = clientX;
+  }
 
-        islandRef.current.rotation.y += rotatingSpeed.current;
+  const moveRotation = (clientX) => {
+    if (isRotating) {
+      const delta = (clientX - lastX.current) / viewport.width;
+      islandRef.current.rotation.y += delta * rotationSensitivity * Math.PI;
+      lastX.current = clientX;
+      rotationSpeed.current = delta * rotationSensitivity * Math.PI;
+    }
+  }
+
+  const endRotation = () => {
+    setisRotating(false);
+  }
+
+  useFrame(() => {
+    if (!isRotating) {
+      rotationSpeed.current *= dampingFactor;
+
+      if (Math.abs(rotationSpeed.current) < 0.001) {
+        rotationSpeed.current = 0;
+      }
+
+      islandRef.current.rotation.y += rotationSpeed.current;
     } else {
-        const rotation = islandRef.current.rotation.y
+      const rotation = islandRef.current.rotation.y;
 
-        const normalisedRotation = ((rotation % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI));
+      const normalizedRotation =
+        ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
 
-        switch (true) {
-            case normalisedRotation >= 5.45 && normalisedRotation <= 5.85:
-                setCurentStage(4);
-                break
-            case normalisedRotation >= 0.85 && normalisedRotation <= 1.3:
-                setCurentStage(3);
-                break
-            case normalisedRotation >= 2.4 && normalisedRotation <= 2.6:
-                setCurentStage(2);
-                break
-            case normalisedRotation >= 4.25 && normalisedRotation <= 4.75:
-                setCurentStage(1);
-                break
-            default:
-                setCurentStage(null);
-            
-        }
+      // Set the current stage based on the island's orientation
+      switch (true) {
+        case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
+            setCurentStage(4);
+          break;
+        case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
+            setCurentStage(3);
+          break;
+        case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
+            setCurentStage(2);
+          break;
+        case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
+            setCurentStage(1);
+          break;
+        default:
+            setCurentStage(null);
+      }
     }
   })
 
   useEffect(() => {
     const canvas = gl.domElement;
-    canvas.addEventListener('pointerdown', handlePointerDown);
-    canvas.addEventListener('pointerup', handlePointerUp);
-    canvas.addEventListener('pointermove', handlePointerMove);
+    canvas.addEventListener('mousedown', handlePointerDown);
+    canvas.addEventListener('mousemove', handlePointerMove);
+    canvas.addEventListener('mouseup', handlePointerUp);
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
 
     return () => {
-        canvas.removeEventListener('pointerdown', handlePointerDown);
-        canvas.removeEventListener('pointerup', handlePointerUp);
-        canvas.removeEventListener('pointermove', handlePointerMove);
-        document.removeEventListener('keydown', handleKeyDown);
-        document.removeEventListener('keyup', handleKeyUp);
+      canvas.removeEventListener('mousedown', handlePointerDown);
+      canvas.removeEventListener('mousemove', handlePointerMove);
+      canvas.removeEventListener('mouseup', handlePointerUp);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
     }
-  }, [gl, handlePointerDown, handlePointerMove, handlePointerUp])
+  }, [gl, handlePointerDown, handlePointerMove, handlePointerUp, handleTouchStart, handleTouchMove, handleTouchEnd, handleKeyDown, handleKeyUp])
+
 
   return (
     <a.group ref={islandRef} {...props}>
@@ -151,7 +183,7 @@ const Island = ({ isRotating, setisRotating, setCurentStage, ...props}) => {
         material={materials.PaletteMaterial001}
       />
     </a.group>
-  )
+  );
 }
 
 export default Island;
