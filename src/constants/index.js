@@ -1,4 +1,4 @@
-import { meta, shopify, starbucks, tesla } from "../assets/images";
+import { meta, shopify, starbucks, tesla, Electromagnit, EuroPlastic } from "../assets/images";
 import {
     car,
     contact,
@@ -33,11 +33,6 @@ export const skills = [
         type: "Frontend",
     },
     {
-        imageUrl: express,
-        name: "Express",
-        type: "Backend",
-    },
-    {
         imageUrl: git,
         name: "Git",
         type: "Version Control",
@@ -58,39 +53,14 @@ export const skills = [
         type: "Frontend",
     },
     {
-        imageUrl: mongodb,
-        name: "MongoDB",
-        type: "Database",
-    },
-    {
-        imageUrl: motion,
-        name: "Motion",
-        type: "Animation",
-    },
-    {
-        imageUrl: mui,
-        name: "Material-UI",
-        type: "Frontend",
-    },
-    {
         imageUrl: nextjs,
         name: "Next.js",
         type: "Frontend",
     },
     {
-        imageUrl: nodejs,
-        name: "Node.js",
-        type: "Backend",
-    },
-    {
         imageUrl: react,
         name: "React",
         type: "Frontend",
-    },
-    {
-        imageUrl: redux,
-        name: "Redux",
-        type: "State Management",
     },
     {
         imageUrl: sass,
@@ -111,55 +81,26 @@ export const skills = [
 
 export const experiences = [
     {
-        title: "React.js Developer",
-        company_name: "Starbucks",
-        icon: starbucks,
+        title: "Front End Developer",
+        company_name: "EuroPlastic",
+        icon: EuroPlastic,
         iconBg: "#accbe1",
-        date: "March 2020 - April 2021",
+        date: "October 2022 - April 2023",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
+            "Developed a simple web application at the beginning of my journey to optimize both SEO and performance.",
         ],
     },
     {
-        title: "React Native Developer",
-        company_name: "Tesla",
-        icon: tesla,
-        iconBg: "#fbc3bc",
-        date: "Jan 2021 - Feb 2022",
+        title: "Front End Developer",
+        company_name: "Electromagnit",
+        icon: Electromagnit,
+        iconBg: "linear-gradient(to right, #ff7a00 0%, #ffd600 100%)",
+        date: "April 2023 - May 2024",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
+            "Developing and maintaining web applications using Next.js and other related technologies.",
             "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
             "Implementing responsive design and ensuring cross-browser compatibility.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
-        ],
-    },
-    {
-        title: "Web Developer",
-        company_name: "Shopify",
-        icon: shopify,
-        iconBg: "#b7e4c7",
-        date: "Jan 2022 - Jan 2023",
-        points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
-        ],
-    },
-    {
-        title: "Full stack Developer",
-        company_name: "Meta",
-        icon: meta,
-        iconBg: "#a2d2ff",
-        date: "Jan 2023 - Present",
-        points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
+            "Interacted with other developers to achieve better results",
         ],
     },
 ];
@@ -173,7 +114,7 @@ export const socialLinks = [
     {
         name: 'GitHub',
         iconUrl: github,
-        link: 'https://github.com/YourGitHubUsername',
+        link: 'https://github.com/DanDreev1',
     },
     {
         name: 'LinkedIn',
@@ -186,43 +127,15 @@ export const projects = [
     {
         iconUrl: pricewise,
         theme: 'btn-back-red',
-        name: 'Amazon Price Tracker',
-        description: 'Developed a web application that tracks and notifies users of price changes for products on Amazon, helping users find the best deals.',
-        link: 'https://github.com/adrianhajdin/pricewise',
+        name: 'Electomagnit',
+        description: 'Developed a web application with excellent SEO and performance for a company that deals with cargo electromagnets.',
+        link: 'https://electromagnit.vercel.app',
     },
     {
         iconUrl: threads,
         theme: 'btn-back-green',
-        name: 'Full Stack Threads Clone',
-        description: 'Created a full-stack replica of the popular discussion platform "Threads," enabling users to post and engage in threaded conversations.',
-        link: 'https://github.com/adrianhajdin/threads',
+        name: 'EuroPlastic',
+        description: 'Developed a web application with the SEO and translation for a company that creates custom plastic.',
+        link: 'https://www.europlastics.com.ua/%D0%A3%D1%81%D0%BB%D1%83%D0%B3%D0%B8%20EN.html',
     },
-    {
-        iconUrl: car,
-        theme: 'btn-back-blue',
-        name: 'Car Finding App',
-        description: 'Designed and built a mobile app for finding and comparing cars on the market, streamlining the car-buying process.',
-        link: 'https://github.com/adrianhajdin/project_next13_car_showcase',
-    },
-    {
-        iconUrl: snapgram,
-        theme: 'btn-back-pink',
-        name: 'Full Stack Instagram Clone',
-        description: 'Built a complete clone of Instagram, allowing users to share photos and connect with friends in a familiar social media environment.',
-        link: 'https://github.com/adrianhajdin/social_media_app',
-    },
-    {
-        iconUrl: estate,
-        theme: 'btn-back-black',
-        name: 'Real-Estate Application',
-        description: 'Developed a web application for real estate listings, facilitating property searches and connecting buyers with sellers.',
-        link: 'https://github.com/adrianhajdin/projects_realestate',
-    },
-    {
-        iconUrl: summiz,
-        theme: 'btn-back-yellow',
-        name: 'AI Summarizer Application',
-        description: 'App that leverages AI to automatically generate concise & informative summaries from lengthy text content, or blogs.',
-        link: 'https://github.com/adrianhajdin/project_ai_summarizer',
-    }
 ];
